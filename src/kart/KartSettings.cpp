@@ -30,10 +30,10 @@ KartSettings::KartSettings(
 
   if (System::RaceConfig::spInstance->mRaceScenario.mPlayers[(u8)playerIdx].mPlayerType ==
       System::RaceConfig::Player::TYPE_REAL_LOCAL) {
-    this->raceStats = (RaceStats*)operator new(0x14);
+    this->raceStats = new RaceStats;
     if (System::RaceConfig::spInstance->mRaceScenario.mSettings.mGameMode ==
         System::RaceConfig::Settings::GAMEMODE_GRAND_PRIX) {
-      this->gpStats = (GpStats*)operator new(0x1c);
+      this->gpStats = new GpStats;
     }
   }
 }

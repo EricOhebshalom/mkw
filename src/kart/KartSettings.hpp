@@ -8,8 +8,14 @@
 #include "KartDispParams.hpp"
 
 namespace Kart {
-class GpStats;
-class RaceStats;
+class RaceStats {
+  u8 _unk[0x14];
+};
+
+class GpStats {
+  u8 _unk[0x1c];
+};
+
 class KartSettings {
 public:
   KartSettings(
