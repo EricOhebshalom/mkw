@@ -2,37 +2,40 @@
 
 #include <system/RaceConfig.hpp>
 
-// https://decomp.me/scratch/xVuXe
-extern "C" Kart::KartSettings* __ct__Q24Kart12KartSettingsFv(
-    Kart::KartSettings* self,
+namespace Kart {
+
+KartSettings::KartSettings(
     s8 playerIdx,
     System::VehicleId vehicle,
     System::CharacterId character,
     u32 isBike,
-    Kart::KartParam* kartParam,
+    KartParam* kartParam,
     void* arg6,
     KartDriverDispParams* kartDriverDispParams,
     KartPartsDispParams* kartPartsDispParams,
     BikePartsDispParams* bikePartsDispParams,
     DriverDispParams* driverDispParams) {
-  self->isBike = isBike;
-  self->vehicle = vehicle;
-  self->character = character;
-  self->playerIdx = playerIdx;
-  self->kartParam = kartParam;
-  self->_18 = arg6;
-  self->kartDriverDispParams = kartDriverDispParams;
-  self->kartPartsDispParams = kartPartsDispParams;
-  self->bikePartsDispParams = bikePartsDispParams;
-  self->driverDispParams = driverDispParams;
-  self->gpStats = nullptr;
-  self->raceStats = nullptr;
+  this->isBike = isBike;
+  this->vehicle = vehicle;
+  this->character = character;
+  this->playerIdx = playerIdx;
+  this->kartParam = kartParam;
+  this->_18 = arg6;
+  this->kartDriverDispParams = kartDriverDispParams;
+  this->kartPartsDispParams = kartPartsDispParams;
+  this->bikePartsDispParams = bikePartsDispParams;
+  this->driverDispParams = driverDispParams;
+  this->gpStats = nullptr;
+  this->raceStats = nullptr;
 
-  if (System::RaceConfig::spInstance->mRaceScenario.mPlayers[(u8)playerIdx].mPlayerType == 0) {
-    self->raceStats = (Kart::RaceStats*)operator new(0x14);
-    if (System::RaceConfig::spInstance->mRaceScenario.mSettings.mGameMode == 0) {
-      self->gpStats = (Kart::GpStats*)operator new(0x1c);
+  if (System::RaceConfig::spInstance->mRaceScenario.mPlayers[(u8)playerIdx].mPlayerType ==
+      System::RaceConfig::Player::TYPE_REAL_LOCAL) {
+    this->raceStats = (RaceStats*)operator new(0x14);
+    if (System::RaceConfig::spInstance->mRaceScenario.mSettings.mGameMode ==
+        System::RaceConfig::Settings::GAMEMODE_GRAND_PRIX) {
+      this->gpStats = (GpStats*)operator new(0x1c);
     }
   }
-  return self;
 }
+
+} // namespace Kart

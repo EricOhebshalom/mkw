@@ -12,7 +12,17 @@ class GpStats;
 class RaceStats;
 class KartSettings {
 public:
-  KartSettings();
+  KartSettings(
+      s8 playerIdx,
+      System::VehicleId vehicle,
+      System::CharacterId character,
+      u32 isBike,
+      KartParam* kartParam,
+      void* arg6,
+      KartDriverDispParams* kartDriverDispParams,
+      KartPartsDispParams* kartPartsDispParams,
+      BikePartsDispParams* bikePartsDispParams,
+      DriverDispParams* driverDispParams);
 
   u32 isBike;
   System::VehicleId vehicle;
