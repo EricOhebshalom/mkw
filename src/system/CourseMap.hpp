@@ -316,12 +316,14 @@ public:
   };
 
   MapdataJugemPoint(const SData* data);
+  void getPos(EGG::Vector3f* pos, u32 playerIdx) const;
 
   const SData* mpData;
   EGG::Vector3f mRotation;
   EGG::Vector3f mForward;
   EGG::Vector3f mTangent;
-  u16 _28;
+  u8 enemyPoint;
+  u8 itemPoint;
   s16 _2a;
   s16 _2c;
   u8 _2e[2];
