@@ -316,11 +316,15 @@ public:
   };
 
   MapdataJugemPoint(const SData* data);
-  virtual ~MapdataJugemPoint();
 
-private:
-  SData* mpData;
-  u8 _08[0x30 - 0x08];
+  const SData* mpData;
+  EGG::Vector3f mRotation;
+  EGG::Vector3f mForward;
+  EGG::Vector3f mTangent;
+  u16 _28;
+  s16 _2a;
+  s16 _2c;
+  u8 _2e[2];
 };
 static_assert(sizeof(MapdataJugemPoint) == 0x30);
 

@@ -464,6 +464,50 @@ bool MapdataEnemyPoint::isNonPrivateBattle() {
               RaceConfig::Settings::GAMEMODE_PUBLIC_BATTLE);
 }
 
+extern "C" void VEC3_fromNeg(EGG::Vector3f& out, const EGG::Vector3f& in);
+void VEC3_fromQuaternionRotated(EGG::Vector3f& out, const EGG::Quatf& q,
+                                const EGG::Vector3f& in);
+
+extern "C" EGG::Vector3f RKSystem_ex;
+extern "C" EGG::Vector3f lbl_802A4148;
+
+MapdataJugemPoint::MapdataJugemPoint(const SData* data) {
+  mpData = data;
+
+  f32 z = DEG2RAD(data->rotation.z);
+  f32 y = DEG2RAD(data->rotation.y);
+  f32 x = DEG2RAD(data->rotation.x);
+  mRotation.z = z;
+  mRotation.x = x;
+  mRotation.y = y;
+
+  EGG::Quatf quat;
+  quat.setRPY(mRotation.x, mRotation.y, mRotation.z);
+
+  EGG::Vector3f negZ;
+  VEC3_fromNeg(negZ, lbl_802A4148);
+  EGG::Vector3f forward;
+  VEC3_fromQuaternionRotated(forward, quat, negZ);
+  mForward = forward;
+
+  EGG::Vector3f negX;
+  VEC3_fromNeg(negX, RKSystem_ex);
+  EGG::Vector3f tangent;
+  VEC3_fromQuaternionRotated(tangent, quat, negX);
+  mTangent = tangent;
+
+  if (mpData->range < 0) {
+    _2a = -1;
+    _2c = 0;
+  } else {
+    _2a = mpData->range % 100;
+    if (_2a == 99) {
+      _2a = -1;
+    }
+    _2c = mpData->range / 100;
+  }
+}
+
 MapdataJugemPoint* CourseMap::getJugemPoint(u16 i) const {
   u16 count = mpJugemPoint ? mpJugemPoint->size() : 0;
   return i < count ? mpJugemPoint->get(i) : 0;
