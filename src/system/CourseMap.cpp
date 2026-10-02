@@ -469,31 +469,33 @@ void VEC3_fromQuaternionRotated(EGG::Vector3f& out, const EGG::Quatf& q,
                                 const EGG::Vector3f& in);
 
 extern "C" EGG::Vector3f RKSystem_ex;
-extern "C" EGG::Vector3f lbl_802A4148;
+extern "C" EGG::Vector3f lbl_802A4148; // RKSystem_ez
 
-MapdataJugemPoint::MapdataJugemPoint(const SData* data) {
-  mpData = data;
+inline EGG::Vector3f operator-(const EGG::Vector3f& in) {
+  EGG::Vector3f out;
+  VEC3_fromNeg(out, in);
+  return out;
+}
 
-  f32 z = DEG2RAD(data->rotation.z);
-  f32 y = DEG2RAD(data->rotation.y);
-  f32 x = DEG2RAD(data->rotation.x);
-  mRotation.z = z;
-  mRotation.x = x;
-  mRotation.y = y;
+inline EGG::Vector3f rotateQuat(const EGG::Quatf& q, const EGG::Vector3f& v) {
+  EGG::Vector3f out;
+  VEC3_fromQuaternionRotated(out, q, v);
+  return out;
+}
 
+MapdataJugemPoint::MapdataJugemPoint(const SData* data)
+    : mpData(data),
+      mRotation(DEG2RAD(data->rotation.x), DEG2RAD(data->rotation.y),
+                DEG2RAD(data->rotation.z)) {
   EGG::Quatf quat;
   quat.setRPY(mRotation.x, mRotation.y, mRotation.z);
 
-  EGG::Vector3f negZ;
-  VEC3_fromNeg(negZ, lbl_802A4148);
-  EGG::Vector3f forward;
-  VEC3_fromQuaternionRotated(forward, quat, negZ);
+  EGG::Vector3f negZ = -lbl_802A4148;
+  EGG::Vector3f forward = rotateQuat(quat, negZ);
   mForward = forward;
 
-  EGG::Vector3f negX;
-  VEC3_fromNeg(negX, RKSystem_ex);
-  EGG::Vector3f tangent;
-  VEC3_fromQuaternionRotated(tangent, quat, negX);
+  EGG::Vector3f negX = -RKSystem_ex;
+  EGG::Vector3f tangent = rotateQuat(quat, negX);
   mTangent = tangent;
 
   if (mpData->range < 0) {
