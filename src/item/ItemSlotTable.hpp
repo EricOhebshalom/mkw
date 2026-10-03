@@ -5,9 +5,13 @@
 
 namespace Item {
 
+struct ItemSlotChanceRow {
+    u16 itemChances[19];
+};
+
 struct ItemSlotTableHolder {
-    u32 count;   // 0x0
-    s16 *data;   // 0x4
+    u32 count;                  // 0x0
+    ItemSlotChanceRow *data;    // 0x4
 };
 
 class ItemSlotTable : public EGG::Disposer {

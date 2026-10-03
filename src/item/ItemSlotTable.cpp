@@ -42,21 +42,21 @@ bool ItemSlotTable::checkSpawnTimer(int itemObjId, int param_3) {
 extern const u16 sPlayerCountPositionRemap[12][12];
 
 void ItemSlotTable::scaleTable(ItemSlotTableHolder *holder) {
-    u16 *data = (u16 *)holder->data;
-    u16 *dest = data;
+    ItemSlotChanceRow *data = holder->data;
+    ItemSlotChanceRow *dest = data;
     for (s32 pos = 0; pos < (s32)mPlayerCount; pos++) {
         u16 remappedPos = sPlayerCountPositionRemap[mPlayerCount - 1][pos];
-        u16 *src = (u16 *)((u8 *)data + (u16)(remappedPos - 1) * 0x26);
+        ItemSlotChanceRow *src = &data[(u16)(remappedPos - 1)];
         for (int i = 0; i < 19; i++) {
-            dest[i] = src[i];
+            dest->itemChances[i] = src->itemChances[i];
         }
-        dest = (u16 *)((u8 *)dest + 0x26);
+        dest++;
     }
     for (s32 pos = mPlayerCount; pos < 12; pos++) {
         for (int i = 0; i < 19; i++) {
-            dest[i] = 0;
+            dest->itemChances[i] = 0;
         }
-        dest = (u16 *)((u8 *)dest + 0x26);
+        dest++;
     }
 }
 
