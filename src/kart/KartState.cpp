@@ -77,7 +77,7 @@ void KartState::reset() {
   m_70 = 0;
   mBoostRampType = -1;
   mJumpPadType = -1;
-  *(u16*)_84 = 0;
+  _84 = 0;
   mStartBoostCharge = 0.0f;
   mStick.y = 0.0f;
   mStick.x = 0.0f;
@@ -113,9 +113,23 @@ void KartState::startWipe(int wipeState) {
 }
 
 void KartState::resetCollisionFlags() {
-  mFlags.field(0) &= 0xfe7f9c78;
-  mFlags.field(1) &= 0xffffefff;
-  mFlags.field(2) &= 0x3fbfefff;
+  mFlags.field(0) &= ~(
+      KART_FLAG_MASK(KART_FLAG_ACCELERATE) |
+      KART_FLAG_MASK(KART_FLAG_BRAKE) |
+      KART_FLAG_MASK(KART_FLAG_DRIFT_INPUT) |
+      KART_FLAG_MASK(KART_FLAG_HOP_START) |
+      KART_FLAG_MASK(KART_FLAG_ACCELERATE_START) |
+      KART_FLAG_MASK(KART_FLAG_GROUND_START) |
+      KART_FLAG_MASK(KART_FLAG_STICK_LEFT) |
+      KART_FLAG_MASK(KART_FLAG_WALL_COLLISION_START) |
+      KART_FLAG_MASK(KART_FLAG_AIR_START) |
+      KART_FLAG_MASK(KART_FLAG_STICK_RIGHT));
+  mFlags.field(1) &= ~KART_FLAG_MASK(KART_FLAG_ZIPPER_INVISIBLE_WALL);
+  mFlags.field(2) &= ~(
+      KART_FLAG_MASK(KART_FLAG_STH_4C) |
+      KART_FLAG_MASK(KART_FLAG_DISABLE_Y_SUS_FORCE) |
+      KART_FLAG_MASK(KART_FLAG_STH_5E) |
+      KART_FLAG_MASK(KART_FLAG_STH_5F));
   mStick.y = 0.0f;
   mStick.x = 0.0f;
 }
