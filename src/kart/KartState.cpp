@@ -56,4 +56,68 @@ KartState::KartState(KartSettings* settings) {
     set(KART_FLAG_DEMO_LOSS);
   }
 }
+
+void KartState::init() {
+  reset();
+  resetOob();
 }
+
+void KartState::reset() {
+  mFlags.field(3) = 0;
+  mFlags.field(2) = 0;
+  mFlags.field(1) = 0;
+  mFlags.field(0) = 0;
+  mAirtime = 0;
+  _24 = 0.0f;
+  mUp.setZero();
+  _40.setZero();
+  _58 = 0;
+  _5c = 0;
+  mHwgTimer = 0;
+  m_70 = 0;
+  mBoostRampType = -1;
+  mJumpPadType = -1;
+  *(u16*)_84 = 0;
+  mStartBoostCharge = 0.0f;
+  mStick.y = 0.0f;
+  mStick.x = 0.0f;
+  _a4 = 0;
+  _4c = m_a8 = EGG::Vector3f::zero;
+  _a6 = 0;
+}
+
+void KartState::resetOob() {
+  mWipeState = -1;
+  mWipeFrame = -1;
+}
+
+extern "C" s16 lbl_1_data_3958[];
+
+void KartState::updateWipe() {
+  if (mWipeState == -1) {
+    return;
+  }
+
+  mWipeRatio = (f32)++mWipeFrame / (f32)lbl_1_data_3958[mWipeState];
+  if (1.0f < mWipeRatio) {
+    mWipeRatio = 1.0f;
+  }
+  if (mWipeFrame > lbl_1_data_3958[mWipeState]) {
+    mWipeState = -1;
+  }
+}
+
+void KartState::startWipe(int wipeState) {
+  mWipeState = wipeState;
+  mWipeFrame = 0;
+}
+
+void KartState::resetCollisionFlags() {
+  mFlags.field(0) &= 0xfe7f9c78;
+  mFlags.field(1) &= 0xffffefff;
+  mFlags.field(2) &= 0x3fbfefff;
+  mStick.y = 0.0f;
+  mStick.x = 0.0f;
+}
+
+} // namespace Kart
