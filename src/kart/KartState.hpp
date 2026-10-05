@@ -52,6 +52,7 @@ enum KartFlags {
   KART_FLAG_STH_5F = 0x5f,
   KART_FLAG_STH_61 = 0x61,
   KART_FLAG_STH_WALL_COL = 0x63,
+  KART_FLAG_CHARGE_START_BOOST = 0x68,
   KART_FLAG_STH_KILLER = 0x6a,
   KART_FLAG_CPU = 0x80,
   KART_FLAG_LOCAL = 0x81,
@@ -76,6 +77,9 @@ public:
   void updateWipe();
   void startWipe(int wipeState);
   void resetCollisionFlags();
+  void updateStartBoostCharge();
+  void computeStartBoost();
+  void applyStartBoost(int startBoostIdx);
 
   bool on(size_t n) const {
     return mFlags.on(n);

@@ -84,8 +84,8 @@ class KartObjectProxy {
 public:
   KartObjectProxy();
 
-  KartSettings* kartSettings();
-  const KartSettings* kartSettings() const;
+  KartSettings* kartSettings() { return mAccessor->kartSettings; }
+  const KartSettings* kartSettings() const { return mAccessor->kartSettings; }
   KartPhysics* kartPhysics();
   const KartPhysics* kartPhysics() const;
   KartDynamics* kartDynamics();
