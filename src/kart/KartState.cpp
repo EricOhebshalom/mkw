@@ -211,7 +211,8 @@ static inline void checkTournamentObjective(
   if (config->mRaceScenario.mSettings.mGameMode ==
           System::RaceConfig::Settings::GAMEMODE_MISSION_TOURNAMENT &&
       (int)config->mRaceScenario.mCompetitionSettings.objective == 10) {
-    *(u32*)((u8*)manager->raceMode + 0xc) = 2;
+    static_cast<System::RaceModeCompetition*>(manager->raceMode)
+        ->mObjectiveStatus = 2;
   }
 }
 
@@ -227,7 +228,7 @@ static inline void checkTournamentObjective(
 void KartState::applyStartBoost(int startBoostIdx) {
   if (startBoostIdx == -1) {
     KartMove* move = mProxy->kartMove();
-    fn_1_78CFC((void*)((u8*)move + 0x264));
+    fn_1_78CFC(move->kartBurnout());
     checkTournamentObjective(
         System::RaceConfig::spInstance, System::RaceManager::spInstance);
     if (mProxy->kartState()->on(KART_FLAG_ONLINE_LOCAL)) {
@@ -242,7 +243,7 @@ void KartState::applyStartBoost(int startBoostIdx) {
     if (mProxy->kartState()->on(KART_FLAG_ONLINE_LOCAL)) {
       fn_1_8140C(mProxy, 0x1b);
       KartNetSender* netSender = mProxy->kartNetSender();
-      *(u8*)((u8*)netSender + 0x57) = startBoostIdx;
+      netSender->mStartBoostIdx = startBoostIdx;
     }
   } else {
     checkTournamentObjective(

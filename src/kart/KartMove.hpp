@@ -69,6 +69,7 @@ public:
   u16 flags() const { return mFlags; }
   const KartJump* kartJump() { return mJump; }
   const KartHalfPipe* kartHalfPipe() { return mHalfPipe; }
+  void* kartBurnout() { return mBurnout; }
 
   void setStartBoostCharge(f32 charge) { mStartBoostCharge = charge; }
 
@@ -107,7 +108,8 @@ private:
   u8 _256[0x258 - 0x256];
   KartJump* mJump;
   KartHalfPipe* mHalfPipe;
-  u8 _260[0x294 - 0x260];
+  u8 _260[0x264 - 0x260];
+  u8 mBurnout[0x294 - 0x264];
 };
 static_assert(sizeof(KartMove) == 0x294);
 
